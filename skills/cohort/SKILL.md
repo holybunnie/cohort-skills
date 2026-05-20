@@ -12,6 +12,40 @@ metadata:
 
 A composed workflow over real OnchainOS commands. COHORT finds the tokens that the **most** smart-money wallets are buying together (the "cohort"), assesses each token's safety, then watches those exact wallets for sells — closing the loop that buy-only signal feeds leave open. Trade execution is gated by a hard-stop confirmation phrase.
 
+## Workflow at a glance
+
+```mermaid
+flowchart LR
+    A["User asks:<br/>'what is smart money<br/>converging on right now?'"] --> B{"cohort run"}
+    B --> C["onchainos signal list<br/>--chain <chain>"]
+    C --> D["aggregate by token,<br/>count distinct SM wallets,<br/>take top 5"]
+    D --> E["parallel per token:<br/>token price-info<br/>token advanced-info<br/>security token-scan"]
+    E --> F{"verdict"}
+    F -->|FOLLOW| G["render cohort report<br/>(text + HTML)"]
+    F -->|WATCH| G
+    F -->|AVOID| G
+
+    G --> H{"user action?"}
+    H -->|cohort watch| I["onchainos ws start<br/>--channel address-tracker-activity<br/>--wallet-addresses <cohort>"]
+    I --> J["onchainos ws poll<br/>filter tradeType=2 (sells only)"]
+    J --> K["live COHORT EXIT alerts<br/>as cohort wallets exit"]
+    K --> J
+
+    H -->|cohort backtest| L["onchainos market kline<br/>+ replay cohort@T=0 verdict"]
+    L --> M["show peak / final / drawdown<br/>vs. what verdict called"]
+
+    H -->|cohort follow| N["onchainos wallet status<br/>onchainos swap quote"]
+    N --> O["HARD STOP<br/>wait for exact phrase<br/>'confirm follow SYM AMT'"]
+    O -->|exact match| P["onchainos swap execute"]
+    O -->|anything else| Q["cancel — no broadcast"]
+    P --> I
+
+    style F fill:#1e3a5f,stroke:#aee,color:#fff
+    style O fill:#3a1f1f,stroke:#faa,color:#fff
+    style P fill:#1e5f3a,stroke:#aef,color:#fff
+    style Q fill:#3a3a1f,stroke:#fea,color:#fff
+```
+
 ## Pre-flight Checks
 
 Before running any onchainos command, verify:
@@ -109,11 +143,13 @@ python3 skills/cohort/scripts/serve.py   # http://localhost:8765/cohort-report.h
 
 ## Modes
 
-| Mode | Flag | Network | Trades | Use when |
+| Mode | Flag / subcommand | Network | Trades | Use when |
 |---|---|---|---|---|
-| Default (analysis) | none | Real CLI | Never | User wants to know what smart money is converging on |
-| Demo | `--demo` | None (bundled fixtures) | Never | Reliable walkthrough with no API/CLI deps |
-| Dry-run | `--dry-run` | Real CLI | Never (banner shown) | Real data, explicitly no risk of executing |
+| Discovery (analysis) | `cohort run` | Real CLI | Never | What is smart money converging on right now |
+| Demo | `--demo` on any subcommand | None (bundled fixtures) | Never | Reliable walkthrough with no API/CLI deps |
+| Dry-run | `--dry-run` on `follow` | Real CLI | Never (banner) | Real data + quote, explicitly no risk of executing |
+| Real-time sell-watch | `cohort watch` | Real `onchainos ws` | Never (read-only) | Live alerts when cohort wallets start exiting |
+| Historical replay | `cohort backtest` | `market kline` (live) or demo | Never | Validate the verdict framework against history |
 | Follow (gated) | `cohort follow ...` | Real CLI | Only after explicit confirm | User has decided to follow the cohort |
 
 The skill MUST print the active mode as the first line of any user-facing report.
