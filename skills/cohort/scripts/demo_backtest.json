@@ -1,0 +1,86 @@
+{
+  "_comment": "Bundled historical replays for `cohort backtest --demo`. Each scenario captures cohort state at T=0 plus what actually happened over the following days. Shape: candles array mirrors `onchainos market kline` output.",
+  "scenarios": [
+    {
+      "name": "WEN — FOLLOW that worked",
+      "token_address": "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYLWbWQX1xx",
+      "symbol": "WEN",
+      "chain": "solana",
+      "t_zero": "2026-04-20T14:00:00Z",
+      "cohort_at_t_zero": {
+        "wallet_count": 6,
+        "honeypot": false,
+        "buy_tax_pct": 0.0,
+        "sell_tax_pct": 0.0,
+        "mint_authority_renounced": true,
+        "freeze_authority_renounced": true,
+        "sells_observed": 0
+      },
+      "verdict_at_t_zero": "FOLLOW",
+      "candles_1d": [
+        {"ts": "2026-04-20", "open": 0.0000600, "close": 0.0000650, "high": 0.0000680, "low": 0.0000595},
+        {"ts": "2026-04-21", "open": 0.0000650, "close": 0.0000702, "high": 0.0000745, "low": 0.0000640},
+        {"ts": "2026-04-22", "open": 0.0000702, "close": 0.0000755, "high": 0.0000790, "low": 0.0000690},
+        {"ts": "2026-04-23", "open": 0.0000755, "close": 0.0000820, "high": 0.0000840, "low": 0.0000750},
+        {"ts": "2026-04-24", "open": 0.0000820, "close": 0.0000801, "high": 0.0000835, "low": 0.0000780},
+        {"ts": "2026-04-25", "open": 0.0000801, "close": 0.0000845, "high": 0.0000870, "low": 0.0000795},
+        {"ts": "2026-04-26", "open": 0.0000845, "close": 0.0000910, "high": 0.0000935, "low": 0.0000840},
+        {"ts": "2026-04-27", "open": 0.0000910, "close": 0.0000960, "high": 0.0000980, "low": 0.0000890},
+        {"ts": "2026-04-28", "open": 0.0000960, "close": 0.0000938, "high": 0.0000975, "low": 0.0000915},
+        {"ts": "2026-04-29", "open": 0.0000938, "close": 0.0001012, "high": 0.0001050, "low": 0.0000925},
+        {"ts": "2026-04-30", "open": 0.0001012, "close": 0.0001088, "high": 0.0001120, "low": 0.0000998},
+        {"ts": "2026-05-01", "open": 0.0001088, "close": 0.0001135, "high": 0.0001160, "low": 0.0001050},
+        {"ts": "2026-05-02", "open": 0.0001135, "close": 0.0001095, "high": 0.0001140, "low": 0.0001072},
+        {"ts": "2026-05-03", "open": 0.0001095, "close": 0.0001168, "high": 0.0001200, "low": 0.0001080},
+        {"ts": "2026-05-04", "open": 0.0001168, "close": 0.0001210, "high": 0.0001245, "low": 0.0001150},
+        {"ts": "2026-05-05", "open": 0.0001210, "close": 0.0001188, "high": 0.0001230, "low": 0.0001165},
+        {"ts": "2026-05-06", "open": 0.0001188, "close": 0.0001145, "high": 0.0001210, "low": 0.0001130},
+        {"ts": "2026-05-07", "open": 0.0001145, "close": 0.0001102, "high": 0.0001175, "low": 0.0001088},
+        {"ts": "2026-05-08", "open": 0.0001102, "close": 0.0001060, "high": 0.0001120, "low": 0.0001025},
+        {"ts": "2026-05-09", "open": 0.0001060, "close": 0.0001038, "high": 0.0001085, "low": 0.0001012},
+        {"ts": "2026-05-10", "open": 0.0001038, "close": 0.0000965, "high": 0.0001045, "low": 0.0000950},
+        {"ts": "2026-05-11", "open": 0.0000965, "close": 0.0000898, "high": 0.0000970, "low": 0.0000880},
+        {"ts": "2026-05-12", "open": 0.0000898, "close": 0.0000882, "high": 0.0000920, "low": 0.0000870},
+        {"ts": "2026-05-13", "open": 0.0000882, "close": 0.0000860, "high": 0.0000895, "low": 0.0000845},
+        {"ts": "2026-05-14", "open": 0.0000860, "close": 0.0000845, "high": 0.0000885, "low": 0.0000832},
+        {"ts": "2026-05-15", "open": 0.0000845, "close": 0.0000852, "high": 0.0000880, "low": 0.0000820},
+        {"ts": "2026-05-16", "open": 0.0000852, "close": 0.0000830, "high": 0.0000868, "low": 0.0000815},
+        {"ts": "2026-05-17", "open": 0.0000830, "close": 0.0000825, "high": 0.0000855, "low": 0.0000810},
+        {"ts": "2026-05-18", "open": 0.0000825, "close": 0.0000818, "high": 0.0000845, "low": 0.0000800},
+        {"ts": "2026-05-19", "open": 0.0000818, "close": 0.0000821, "high": 0.0000835, "low": 0.0000805}
+      ],
+      "cohort_exits": [
+        {"day": 13, "wallets_sold": 2, "note": "Two cohort wallets started exiting near the local top (~$0.00012)"},
+        {"day": 18, "wallets_sold": 4, "note": "Cohort majority exited; would trigger WATCH→AVOID on day 18"}
+      ]
+    },
+    {
+      "name": "RUGZ — AVOID that saved the user",
+      "token_address": "RUGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "symbol": "RUGZ",
+      "chain": "solana",
+      "t_zero": "2026-04-20T14:00:00Z",
+      "cohort_at_t_zero": {
+        "wallet_count": 4,
+        "honeypot": true,
+        "buy_tax_pct": 0.0,
+        "sell_tax_pct": 99.0,
+        "mint_authority_renounced": false,
+        "freeze_authority_renounced": false,
+        "sells_observed": 2
+      },
+      "verdict_at_t_zero": "AVOID",
+      "candles_1d": [
+        {"ts": "2026-04-20", "open": 0.0000012, "close": 0.0000018, "high": 0.0000022, "low": 0.0000011},
+        {"ts": "2026-04-21", "open": 0.0000018, "close": 0.0000061, "high": 0.0000070, "low": 0.0000017},
+        {"ts": "2026-04-22", "open": 0.0000061, "close": 0.0000048, "high": 0.0000075, "low": 0.0000045},
+        {"ts": "2026-04-23", "open": 0.0000048, "close": 0.0000002, "high": 0.0000050, "low": 0.0000001, "note": "rug pull — liquidity removed"},
+        {"ts": "2026-04-24", "open": 0.0000002, "close": 0.0000001, "high": 0.0000002, "low": 0.0000001}
+      ],
+      "cohort_exits": [
+        {"day": 0, "wallets_sold": 2, "note": "Two wallets exited within hours — visible at t=0"},
+        {"day": 3, "wallets_sold": 4, "note": "Remaining cohort exited just before the rug; AVOID verdict held"}
+      ]
+    }
+  ]
+}
