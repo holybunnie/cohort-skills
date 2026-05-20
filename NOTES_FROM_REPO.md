@@ -26,11 +26,22 @@ Every row in this table maps a COHORT step to a real upstream file. No `onchaino
 - **`--mev-protection`, `--force`, `--gas-level`** (all valid `swap execute` flags per the upstream SKILL) are intentionally NOT exposed by COHORT. Adding them would require defaulting them, and a wrong default could spend more or bypass risk warning 81362. If a user wants these, they pass them in via a future user-facing wrapper; the engine does not opt into them.
 - **`--format json`**: the upstream CLAUDE.md says scripts should append `--format json` to all CLI commands. COHORT does this in `run_onchainos()`.
 
+## Verified against the actual installed CLI
+
+After the first version of this file was written, both the `onchainos` CLI binary and the upstream skills plugin were installed in this codespace and every command above was verified against the live `--help` output:
+
+```
+onchainos --version
+  → onchainos 3.3.6
+~/.claude/plugins/marketplaces/onchainos-skills/.claude-plugin/plugin.json   (22 SKILL.md files)
+```
+
+All 9 commands pass `onchainos <cmd> --help` without error. The load-bearing one — `onchainos tracker activities --tracker-type multi_address --wallet-address <...> --trade-type 2` — has its flags confirmed verbatim by the CLI's own help text (`Trade type: 0=all (default), 1=buy, 2=sell`, `Wallet addresses (required for multi_address), comma-separated, max 20`).
+
 ## What I did NOT confirm
 
-Two honest gaps:
+One honest gap:
 
-1. **I did not execute any of the live commands.** The `onchainos` CLI is not installed in this build environment. The skill's behaviour against the live CLI was validated by reading the upstream SKILL.md / workflow files, not by running the binary. The check-#3 "live demo" therefore exercises the fallback path (no CLI on PATH → demo mode with banner) rather than calling OKX endpoints. Anyone running this against a real `onchainos` install gets real data — the call shapes are taken from upstream verbatim.
-2. **Per-endpoint paid quota handling** (the `notifications[]` / `confirming: true` flow described in `okx-dex-market/_shared/payment-notifications.md`) is not implemented. Live mode reads `data` from the response but does not surface payment prompts. A real production user would want this wired up; for a discovery + sell-watch demo it would obscure the main flow.
+- **No live signal/tracker data was retrieved.** A fresh CLI install returns `{"confirming": true, "notifications": [...]}` on every market-API call — the free quota for this install is exhausted and the endpoint requires per-call payment via the OKX Agent Payments Protocol. COHORT detects this in `run_onchainos()`, surfaces the gate in plain English, and falls back to demo mode. To get real data through COHORT, the user needs to resolve the gate through the upstream `okx-agent-payments-protocol` skill — COHORT will not auto-pay.
 
-Neither gap is a fabricated command — they're scope decisions documented here so the next reviewer sees them.
+This is not a fabricated command; it's an honest interaction with a paid API that COHORT handles instead of pretending to succeed.

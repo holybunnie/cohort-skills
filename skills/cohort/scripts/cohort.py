@@ -43,12 +43,30 @@ def have_onchainos() -> bool:
     return shutil.which("onchainos") is not None
 
 
+class PaymentGateError(RuntimeError):
+    """Raised when the live API returns confirming:true (paid-quota gate)."""
+
+
 def run_onchainos(args: list[str]) -> dict[str, Any]:
-    cmd = ["onchainos", *args, "--format", "json"]
+    # onchainos v3.x emits JSON natively on non-TTY stdout (no flag needed).
+    # When the API returns confirming:true (paid-quota gate) the CLI exits with
+    # code 2 and writes the JSON to stdout — so we always try to parse stdout first.
+    cmd = ["onchainos", *args]
     out = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    try:
+        parsed = json.loads(out.stdout) if out.stdout.strip() else None
+    except json.JSONDecodeError:
+        parsed = None
+    if isinstance(parsed, dict) and parsed.get("confirming") is True:
+        raise PaymentGateError(
+            "OKX Market API returned confirming:true — free quota exhausted; "
+            "this endpoint now requires per-call payment via the OKX Agent Payments Protocol. "
+            "COHORT will not auto-pay; resolve the gate via the upstream "
+            "`okx-agent-payments-protocol` skill, or run with --demo."
+        )
     if out.returncode != 0:
-        raise RuntimeError(f"onchainos failed: {' '.join(cmd)}\n{out.stderr}")
-    return json.loads(out.stdout)
+        raise RuntimeError(f"onchainos failed (exit {out.returncode}): {' '.join(cmd)}\n{out.stderr or out.stdout[:300]}")
+    return parsed if parsed is not None else {}
 
 
 def aggregate_cohorts(signal_list: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -185,7 +203,19 @@ def cmd_run(args: argparse.Namespace) -> int:
             mode = "DRY RUN — real CLI data, NO funds moved, NO trades possible"
         else:
             mode = "LIVE — read-only analysis (no trades without explicit confirmation)"
-        raw = run_onchainos(["signal", "list", "--chain", args.chain])
+        try:
+            raw = run_onchainos(["signal", "list", "--chain", args.chain])
+        except PaymentGateError as e:
+            print(f"cohort: {e}")
+            print("cohort: falling back to DEMO mode so the report still renders.")
+            mode = "DEMO (fallback — OKX paid-quota gate active, no live data)"
+            data = load_demo()
+            report = build_report(mode, args.chain, data)
+            if args.json_out:
+                Path(args.json_out).write_text(json.dumps(report, indent=2))
+                print(f"cohort: wrote {args.json_out}")
+            print(render_text_report(report))
+            return 0
         signal_list = raw.get("data", raw) if isinstance(raw, dict) else raw
         enrich: dict[str, Any] = {}
         sells: dict[str, list] = {}

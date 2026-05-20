@@ -35,7 +35,34 @@ python3 skills/cohort/scripts/cohort.py follow \
 
 ## Using as a Claude skill
 
+### Prerequisites
+
+COHORT composes commands from the upstream [`okx/onchainos-skills`](https://github.com/okx/onchainos-skills) plugin. Install both pieces:
+
+```bash
+# 1. Install the onchainos CLI binary
+curl -sSL https://raw.githubusercontent.com/okx/onchainos-skills/main/install.sh | sh
+
+# 2. Install the upstream skills plugin so its SKILL.md files are discoverable
+mkdir -p ~/.claude/plugins/marketplaces
+git clone https://github.com/okx/onchainos-skills.git \
+  ~/.claude/plugins/marketplaces/onchainos-skills
+```
+
+Verify:
+
+```bash
+onchainos --version       # → onchainos 3.3.6 (or newer)
+ls ~/.claude/plugins/marketplaces/onchainos-skills/skills | head
+```
+
+### Add COHORT
+
 Drop `skills/cohort/` into your Claude Code skills directory. The skill triggers when the user asks about smart money convergence, cohort behavior, or watching multi-wallet sells.
+
+### About the OKX paid quota
+
+The OKX Market API has a free quota per installation. Past that quota the CLI returns `{ "confirming": true, ... }` and exits non-zero. COHORT detects this and falls back to demo mode with a clear in-band message — it does not auto-pay. To get live data through COHORT, resolve the payment gate through the upstream `okx-agent-payments-protocol` skill first.
 
 ## What's in this repo
 
