@@ -329,6 +329,14 @@ def main(argv: list[str] | None = None) -> int:
     check = sub.add_parser("check", help="Pre-flight: is onchainos installed?")
     check.set_defaults(func=cmd_check)
 
+    # Lazy-wire the optional watch subcommand. Keeps cohort.py importable even
+    # if watch.py is removed in a future trim.
+    try:
+        from watch import build_watch_parser
+        build_watch_parser(sub)
+    except ImportError:
+        pass
+
     args = parser.parse_args(argv)
     return args.func(args)
 

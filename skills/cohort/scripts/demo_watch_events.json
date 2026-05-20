@@ -1,0 +1,57 @@
+{
+  "_comment": "Bundled fixtures for `cohort watch --demo`. Replays a sequence of cohort sell events with synthetic delays so demos look like live activity. Shape mirrors `onchainos ws poll --channel address-tracker-activity` output.",
+  "events": [
+    {
+      "delay_s": 0.0,
+      "event": {
+        "channel": "address-tracker-activity",
+        "wallet": "BqQXCKaHrYxnq8b4mGw3yV6F2cP5L9R7sT1uK8jE2nXm",
+        "tokenAddress": "2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv",
+        "tokenSymbol": "PEPESOL",
+        "tradeType": 2,
+        "amountUsd": "4200.00",
+        "price": "0.00000632",
+        "ts": "2026-05-20T13:42:00Z"
+      }
+    },
+    {
+      "delay_s": 1.2,
+      "event": {
+        "channel": "address-tracker-activity",
+        "wallet": "5tSm8WnAuQqjEz1xRGBs3rZ4P1c2bMqQYxiL4FxVk2pq",
+        "tokenAddress": "RUGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "tokenSymbol": "RUGZ",
+        "tradeType": 2,
+        "amountUsd": "800.00",
+        "price": "0.0000012",
+        "ts": "2026-05-20T13:55:00Z"
+      }
+    },
+    {
+      "delay_s": 0.8,
+      "event": {
+        "channel": "address-tracker-activity",
+        "wallet": "DfQ9z3MhRkN7pW2vY8aL5cT4uR6sB1xK9eP3yJ7iH8nm",
+        "tokenAddress": "RUGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "tokenSymbol": "RUGZ",
+        "tradeType": 2,
+        "amountUsd": "600.00",
+        "price": "0.00000118",
+        "ts": "2026-05-20T13:58:00Z"
+      }
+    },
+    {
+      "delay_s": 1.5,
+      "event": {
+        "channel": "address-tracker-activity",
+        "wallet": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+        "tokenAddress": "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYLWbWQX1xx",
+        "tokenSymbol": "WEN",
+        "tradeType": 1,
+        "amountUsd": "1200.00",
+        "price": "0.0000835",
+        "ts": "2026-05-20T14:01:00Z"
+      }
+    }
+  ]
+}
