@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "cohort": {
+      "command": "python3",
+      "args": [
+        "./skills/cohort/scripts/mcp_server.py"
+      ],
+      "description": "COHORT — smart-money convergence + cohort sell-watch (read-only; trade execution requires explicit phrase confirmation outside the MCP path)."
+    }
+  }
+}
