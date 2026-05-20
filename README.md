@@ -30,13 +30,27 @@ python3 skills/cohort/scripts/report.py --input report.json --output cohort-repo
 python3 skills/cohort/scripts/serve.py
 # → http://localhost:8765/cohort-report.html
 
-# 3. Dry-run against the real CLI (requires onchainos installed)
+# 3. Real-time sell-watch (live okx-dex-ws, falls back to demo replay)
+python3 skills/cohort/scripts/cohort.py watch --demo --once
+
+# 4. Historical replay — verdict on past cohorts
+python3 skills/cohort/scripts/cohort.py backtest --demo
+
+# 5. Leaderboard-weighted verdict (3 top-tier wallets > 6 random ones)
+python3 skills/cohort/scripts/cohort.py run --demo --weighted
+
+# 6. Dry-run against the real CLI (requires onchainos installed)
 python3 skills/cohort/scripts/cohort.py run --dry-run
 
-# 4. Gated follow (always prints HARD STOP; never broadcasts here)
+# 7. Gated follow (always prints HARD STOP; never broadcasts here)
 python3 skills/cohort/scripts/cohort.py follow \
   --symbol WEN --token EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYLWbWQX1xx \
   --amount 0.1 --chain solana --demo
+
+# 8. MCP server (Claude Desktop / Cursor / Windsurf / Claude Code)
+python3 skills/cohort/scripts/mcp_server.py
+# → exposes cohort_run / cohort_watch / cohort_backtest / cohort_follow_dry_run
+# Copy .mcp.json.example to .mcp.json in your client to install.
 ```
 
 ## Using as a Claude skill
@@ -74,17 +88,23 @@ The OKX Market API has a free quota per installation. Past that quota the CLI re
 
 | Path | Purpose |
 |---|---|
-| `skills/cohort/SKILL.md` | The skill definition (YAML frontmatter + workflow) |
-| `skills/cohort/scripts/cohort.py` | The composition engine |
+| `skills/cohort/SKILL.md` | The skill definition (YAML frontmatter + workflow + Mermaid diagram) |
+| `skills/cohort/scripts/cohort.py` | The composition engine (`run` / `follow` / `check` / lazy-wired `watch` + `backtest`) |
+| `skills/cohort/scripts/watch.py` | Real-time cohort sell-watch via `onchainos ws` |
+| `skills/cohort/scripts/backtest.py` | Historical replay via `onchainos market kline` |
+| `skills/cohort/scripts/weighting.py` | Leaderboard-weighted confidence |
+| `skills/cohort/scripts/mcp_server.py` | MCP server exposing cohort tools over stdio JSON-RPC 2.0 |
 | `skills/cohort/scripts/report.py` | HTML report renderer |
 | `skills/cohort/scripts/serve.py` | localhost HTTP server for the report |
-| `skills/cohort/scripts/demo_data.json` | Bundled fixtures for demo mode |
-| `skills/cohort/references/onchainos-commands.md` | Cross-reference of every CLI command used to the upstream OnchainOS file that defines it |
+| `skills/cohort/scripts/demo_*.json` | Bundled fixtures (signals, watch events, backtest scenarios, leaderboard) |
+| `skills/cohort/references/onchainos-commands.md` | Cross-reference of every CLI command used to its upstream OnchainOS source |
 | `skills/cohort/references/safety-gates.md` | The three serial gates protecting the swap-execute path |
+| `.mcp.json.example` | Drop-in config to install COHORT as an MCP server |
 | `docs/DEMO.md` | Step-by-step walkthrough a stranger can follow |
+| `docs/demo.svg` | Animated SVG embedded in this README |
 | `NOTES_FROM_REPO.md` | Honest accounting of what's verified vs substituted |
 | `BUILD_LOG.md` | Exact commands run during build + what was observed |
-| `tests/` | YAML frontmatter + input-validation tests |
+| `tests/` | YAML, input validation, watch demo, backtest, weighting, and MCP server end-to-end |
 
 ## No CI
 
