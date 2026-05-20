@@ -1,0 +1,145 @@
+{
+  "_comment": "Bundled fixtures for COHORT demo mode. Shape mirrors `onchainos signal list --chain solana` + per-token enrichment. No live data, no API calls.",
+  "chain": "solana",
+  "generated_at": "2026-05-20T14:00:00Z",
+  "signal_list": [
+    {
+      "token_address": "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYLWbWQX1xx",
+      "name": "Wen Token",
+      "symbol": "WEN",
+      "smart_money_wallets": [
+        "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+        "5tSm8WnAuQqjEz1xRGBs3rZ4P1c2bMqQYxiL4FxVk2pq",
+        "GThUX1Atko4tqhN2NaiTazWSeFWMuiUiswQrZSwUgLLk",
+        "7vfCXTzz5d5KqzZQ8d4n1g8gJ3aF2yJ6sCq3W4xY9LRn",
+        "BqQXCKaHrYxnq8b4mGw3yV6F2cP5L9R7sT1uK8jE2nXm",
+        "DfQ9z3MhRkN7pW2vY8aL5cT4uR6sB1xK9eP3yJ7iH8nm"
+      ]
+    },
+    {
+      "token_address": "2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv",
+      "name": "Pepe of Solana",
+      "symbol": "PEPESOL",
+      "smart_money_wallets": [
+        "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+        "5tSm8WnAuQqjEz1xRGBs3rZ4P1c2bMqQYxiL4FxVk2pq",
+        "BqQXCKaHrYxnq8b4mGw3yV6F2cP5L9R7sT1uK8jE2nXm",
+        "8zRKwY5dVx2bJ6hN4aF1qC3uP7sM9eL2tG5yK6iH1xWp"
+      ]
+    },
+    {
+      "token_address": "HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3",
+      "name": "PYTH",
+      "symbol": "PYTH",
+      "smart_money_wallets": [
+        "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+        "DfQ9z3MhRkN7pW2vY8aL5cT4uR6sB1xK9eP3yJ7iH8nm",
+        "GThUX1Atko4tqhN2NaiTazWSeFWMuiUiswQrZSwUgLLk"
+      ]
+    },
+    {
+      "token_address": "RUGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "name": "Honeypot Test",
+      "symbol": "RUGZ",
+      "smart_money_wallets": [
+        "5tSm8WnAuQqjEz1xRGBs3rZ4P1c2bMqQYxiL4FxVk2pq",
+        "BqQXCKaHrYxnq8b4mGw3yV6F2cP5L9R7sT1uK8jE2nXm",
+        "8zRKwY5dVx2bJ6hN4aF1qC3uP7sM9eL2tG5yK6iH1xWp",
+        "DfQ9z3MhRkN7pW2vY8aL5cT4uR6sB1xK9eP3yJ7iH8nm"
+      ]
+    },
+    {
+      "token_address": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+      "name": "Jupiter",
+      "symbol": "JUP",
+      "smart_money_wallets": [
+        "GThUX1Atko4tqhN2NaiTazWSeFWMuiUiswQrZSwUgLLk",
+        "7vfCXTzz5d5KqzZQ8d4n1g8gJ3aF2yJ6sCq3W4xY9LRn"
+      ]
+    }
+  ],
+  "token_enrichment": {
+    "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYLWbWQX1xx": {
+      "price_usd": 0.0000821,
+      "market_cap_usd": 82100000,
+      "liquidity_usd": 4300000,
+      "change_24h_pct": 38.4,
+      "holder_count": 142000,
+      "honeypot": false,
+      "buy_tax_pct": 0.0,
+      "sell_tax_pct": 0.0,
+      "mint_authority_renounced": true,
+      "freeze_authority_renounced": true,
+      "dev_holding_pct": 1.2,
+      "bundle_pct": 4.1
+    },
+    "2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv": {
+      "price_usd": 0.00000632,
+      "market_cap_usd": 6320000,
+      "liquidity_usd": 380000,
+      "change_24h_pct": 12.5,
+      "holder_count": 22000,
+      "honeypot": false,
+      "buy_tax_pct": 1.0,
+      "sell_tax_pct": 1.0,
+      "mint_authority_renounced": true,
+      "freeze_authority_renounced": true,
+      "dev_holding_pct": 2.3,
+      "bundle_pct": 6.0
+    },
+    "HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3": {
+      "price_usd": 0.143,
+      "market_cap_usd": 514000000,
+      "liquidity_usd": 9100000,
+      "change_24h_pct": 3.4,
+      "holder_count": 480000,
+      "honeypot": false,
+      "buy_tax_pct": 0.0,
+      "sell_tax_pct": 0.0,
+      "mint_authority_renounced": true,
+      "freeze_authority_renounced": true,
+      "dev_holding_pct": null,
+      "bundle_pct": null
+    },
+    "RUGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx": {
+      "price_usd": 0.0000012,
+      "market_cap_usd": 120000,
+      "liquidity_usd": 8000,
+      "change_24h_pct": 410.0,
+      "holder_count": 38,
+      "honeypot": true,
+      "buy_tax_pct": 0.0,
+      "sell_tax_pct": 99.0,
+      "mint_authority_renounced": false,
+      "freeze_authority_renounced": false,
+      "dev_holding_pct": 62.0,
+      "bundle_pct": 88.0
+    },
+    "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN": {
+      "price_usd": 0.412,
+      "market_cap_usd": 561000000,
+      "liquidity_usd": 12200000,
+      "change_24h_pct": -1.2,
+      "holder_count": 350000,
+      "honeypot": false,
+      "buy_tax_pct": 0.0,
+      "sell_tax_pct": 0.0,
+      "mint_authority_renounced": true,
+      "freeze_authority_renounced": true,
+      "dev_holding_pct": null,
+      "bundle_pct": null
+    }
+  },
+  "tracker_sells": {
+    "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYLWbWQX1xx": [],
+    "2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv": [
+      {"wallet": "BqQXCKaHrYxnq8b4mGw3yV6F2cP5L9R7sT1uK8jE2nXm", "amount_usd": 4200, "ts": "2026-05-20T13:42:00Z"}
+    ],
+    "HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3": [],
+    "RUGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx": [
+      {"wallet": "5tSm8WnAuQqjEz1xRGBs3rZ4P1c2bMqQYxiL4FxVk2pq", "amount_usd": 800, "ts": "2026-05-20T13:55:00Z"},
+      {"wallet": "DfQ9z3MhRkN7pW2vY8aL5cT4uR6sB1xK9eP3yJ7iH8nm", "amount_usd": 600, "ts": "2026-05-20T13:58:00Z"}
+    ],
+    "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN": []
+  }
+}
