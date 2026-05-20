@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 460" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">
+  <defs>
+    <style>
+      .bg { fill: #0b0e14; }
+      .chrome { fill: #1e2436; }
+      .dot { stroke: none; }
+      .red { fill: #ff5f56; } .yellow { fill: #ffbd2e; } .green { fill: #27c93f; }
+      .text { fill: #d6deeb; }
+      .muted { fill: #6f7c98; }
+      .cmd { fill: #aee; }
+      .ok { fill: #6ee7a0; font-weight: 600; }
+      .warn { fill: #ffd166; font-weight: 600; }
+      .bad { fill: #ff6e6e; font-weight: 600; }
+      .flag { fill: #ff8a8a; }
+      .mode { fill: #fda; }
+      tspan.fade { opacity: 0; }
+    </style>
+  </defs>
+
+  <!-- terminal chrome -->
+  <rect class="bg" width="820" height="460" rx="10"/>
+  <rect class="chrome" width="820" height="28" rx="10"/>
+  <rect class="chrome" y="14" width="820" height="14"/>
+  <circle class="dot red"    cx="16" cy="14" r="6"/>
+  <circle class="dot yellow" cx="34" cy="14" r="6"/>
+  <circle class="dot green"  cx="52" cy="14" r="6"/>
+  <text x="410" y="18" text-anchor="middle" class="muted">cohort — demo</text>
+
+  <g transform="translate(20,52)">
+    <!-- Each line of terminal output. fade-in via <animate> on opacity. -->
+    <text y="0">
+      <tspan class="muted">$ </tspan><tspan class="cmd">python3 skills/cohort/scripts/cohort.py run --demo</tspan>
+    </text>
+
+    <text y="28" class="mode">
+      <tspan opacity="0">MODE: DEMO — using bundled fixtures, no network calls made
+        <animate attributeName="opacity" from="0" to="1" begin="0.6s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+
+    <text y="48" class="text">
+      <tspan opacity="0">COHORT — Smart Money Convergence — chain=solana
+        <animate attributeName="opacity" from="0" to="1" begin="0.9s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+    <text y="64" class="muted">
+      <tspan opacity="0">Snapshot: 2026-05-20T14:00:00Z
+        <animate attributeName="opacity" from="0" to="1" begin="1.0s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+
+    <text y="92" class="muted">
+      <tspan opacity="0">#  SYMBOL    WALLETS PRICE         MCAP      TAX b/s   SELLS  VERDICT
+        <animate attributeName="opacity" from="0" to="1" begin="1.3s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+    <text y="108" class="muted">
+      <tspan opacity="0">----------------------------------------------------------------------
+        <animate attributeName="opacity" from="0" to="1" begin="1.4s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+
+    <text y="128">
+      <tspan class="text" opacity="0">1  WEN       6       $0.0000821    $82.10M   0/0%      0      <animate attributeName="opacity" from="0" to="1" begin="1.7s" dur="0.2s" fill="freeze"/></tspan>
+      <tspan class="ok"   opacity="0">FOLLOW<animate attributeName="opacity" from="0" to="1" begin="1.85s" dur="0.2s" fill="freeze"/></tspan>
+    </text>
+    <text y="144">
+      <tspan class="text" opacity="0">2  PEPESOL   4       $0.0000063    $6.32M    1/1%      1      <animate attributeName="opacity" from="0" to="1" begin="2.0s" dur="0.2s" fill="freeze"/></tspan>
+      <tspan class="warn" opacity="0">WATCH<animate attributeName="opacity" from="0" to="1" begin="2.15s" dur="0.2s" fill="freeze"/></tspan>
+    </text>
+    <text y="160">
+      <tspan class="text" opacity="0">3  RUGZ      4       $0.0000012    $120.0K   0/99%     2      <animate attributeName="opacity" from="0" to="1" begin="2.3s" dur="0.2s" fill="freeze"/></tspan>
+      <tspan class="bad"  opacity="0">AVOID  <animate attributeName="opacity" from="0" to="1" begin="2.45s" dur="0.2s" fill="freeze"/></tspan>
+      <tspan class="flag" opacity="0">  HONEYPOT<animate attributeName="opacity" from="0" to="1" begin="2.55s" dur="0.2s" fill="freeze"/></tspan>
+    </text>
+    <text y="176">
+      <tspan class="text" opacity="0">4  PYTH      3       $0.143        $514.00M  0/0%      0      <animate attributeName="opacity" from="0" to="1" begin="2.6s" dur="0.2s" fill="freeze"/></tspan>
+      <tspan class="warn" opacity="0">WATCH<animate attributeName="opacity" from="0" to="1" begin="2.75s" dur="0.2s" fill="freeze"/></tspan>
+    </text>
+    <text y="192">
+      <tspan class="text" opacity="0">5  JUP       2       $0.412        $561.00M  0/0%      0      <animate attributeName="opacity" from="0" to="1" begin="2.85s" dur="0.2s" fill="freeze"/></tspan>
+      <tspan class="warn" opacity="0">WATCH<animate attributeName="opacity" from="0" to="1" begin="3.0s" dur="0.2s" fill="freeze"/></tspan>
+    </text>
+
+    <text y="222" class="muted">
+      <tspan opacity="0">Verdict legend:  <tspan class="ok">FOLLOW</tspan> = strong convergence, clean safety, no exits
+        <animate attributeName="opacity" from="0" to="1" begin="3.3s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+    <text y="238" class="muted">
+      <tspan opacity="0">                 <tspan class="warn">WATCH</tspan>  = mixed signals or early exits
+        <animate attributeName="opacity" from="0" to="1" begin="3.4s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+    <text y="254" class="muted">
+      <tspan opacity="0">                 <tspan class="bad">AVOID</tspan>  = honeypot, high tax, or cohort already exiting
+        <animate attributeName="opacity" from="0" to="1" begin="3.5s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+
+    <text y="288" class="muted">
+      <tspan opacity="0">Next:
+        <animate attributeName="opacity" from="0" to="1" begin="3.8s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+    <text y="304" class="muted">
+      <tspan opacity="0">  cohort watch     — real-time sell alerts via okx-dex-ws
+        <animate attributeName="opacity" from="0" to="1" begin="3.9s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+    <text y="320" class="muted">
+      <tspan opacity="0">  cohort backtest  — replay verdict against historical scenarios
+        <animate attributeName="opacity" from="0" to="1" begin="4.0s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+    <text y="336" class="muted">
+      <tspan opacity="0">  cohort follow    — gated buy (HARD STOP for confirmation)
+        <animate attributeName="opacity" from="0" to="1" begin="4.1s" dur="0.2s" fill="freeze"/>
+      </tspan>
+    </text>
+
+    <text y="372">
+      <tspan class="muted">$ </tspan>
+      <tspan class="text" opacity="0">▌
+        <animate attributeName="opacity" from="0" to="1" begin="4.5s" dur="0.2s" fill="freeze"/>
+        <animate attributeName="opacity" values="1;0;1" begin="4.7s" dur="1s" repeatCount="indefinite"/>
+      </tspan>
+    </text>
+  </g>
+</svg>

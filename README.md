@@ -2,7 +2,13 @@
 
 A Claude Code skill that finds what smart money is **converging on** right now, then watches those same wallets for **exits** — composed from real [OKX OnchainOS](https://github.com/okx/onchainos-skills) commands.
 
+<p align="center">
+  <img src="docs/demo.svg" alt="COHORT demo run" width="760"/>
+</p>
+
 > **Not a trading bot.** COHORT is an analysis + alerting workflow. The only trade path is gated by a hard-stop confirmation phrase. See `skills/cohort/references/safety-gates.md`.
+
+> **To record a real terminal GIF later:** install [vhs](https://github.com/charmbracelet/vhs) and run `vhs docs/demo.tape` (a tape file isn't included yet — `docs/demo.svg` is the current animated placeholder, served inline by GitHub on the README).
 
 ## What COHORT does
 
