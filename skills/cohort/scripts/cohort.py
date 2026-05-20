@@ -92,7 +92,12 @@ def aggregate_cohorts(signal_list: list[dict[str, Any]]) -> list[dict[str, Any]]
     return cohorts[:5]
 
 
-def verdict(enrich: dict[str, Any], sells: list[dict[str, Any]], cohort_size: int) -> str:
+def verdict(enrich: dict[str, Any], sells: list[dict[str, Any]], cohort_size: int,
+            weighted_size: float | None = None) -> str:
+    """Verdict over a cohort. `weighted_size` (if provided) substitutes for
+    raw cohort_size in the FOLLOW/WATCH thresholds — used by --weighted mode.
+    Safety/exit rules are unchanged.
+    """
     if enrich.get("honeypot"):
         return "AVOID"
     if enrich.get("sell_tax_pct", 0) > 10 or enrich.get("buy_tax_pct", 0) > 10:
@@ -103,19 +108,25 @@ def verdict(enrich: dict[str, Any], sells: list[dict[str, Any]], cohort_size: in
         return "AVOID"
     if sells:
         return "WATCH"
-    if cohort_size >= 4:
+    size = weighted_size if weighted_size is not None else cohort_size
+    if size >= 5.0 if weighted_size is not None else size >= 4:
         return "FOLLOW"
-    if cohort_size >= 3:
+    if size >= 3:
         return "WATCH"
     return "WATCH"
 
 
-def build_report(mode: str, chain: str, data: dict[str, Any]) -> dict[str, Any]:
+def build_report(mode: str, chain: str, data: dict[str, Any],
+                 leaderboard: dict[str, dict[str, Any]] | None = None) -> dict[str, Any]:
     cohorts = aggregate_cohorts(data["signal_list"])
     rows = []
     for c in cohorts:
         enrich = data["token_enrichment"].get(c["token_address"], {})
         sells = data["tracker_sells"].get(c["token_address"], [])
+        wsize: float | None = None
+        if leaderboard is not None:
+            from weighting import weighted_cohort_size
+            wsize = weighted_cohort_size(c["wallets"], leaderboard)
         rows.append(
             {
                 "rank": len(rows) + 1,
@@ -123,6 +134,7 @@ def build_report(mode: str, chain: str, data: dict[str, Any]) -> dict[str, Any]:
                 "name": c["name"],
                 "token_address": c["token_address"],
                 "wallet_count": c["wallet_count"],
+                "weighted_count": round(wsize, 2) if wsize is not None else None,
                 "sample_wallets": c["wallets"][:3],
                 "price_usd": enrich.get("price_usd"),
                 "market_cap_usd": enrich.get("market_cap_usd"),
@@ -134,10 +146,11 @@ def build_report(mode: str, chain: str, data: dict[str, Any]) -> dict[str, Any]:
                 "mint_renounced": enrich.get("mint_authority_renounced"),
                 "freeze_renounced": enrich.get("freeze_authority_renounced"),
                 "sells_observed": len(sells),
-                "verdict": verdict(enrich, sells, c["wallet_count"]),
+                "verdict": verdict(enrich, sells, c["wallet_count"], weighted_size=wsize),
             }
         )
-    return {"mode": mode, "chain": chain, "generated_at": data.get("generated_at", ""), "rows": rows}
+    return {"mode": mode, "chain": chain, "generated_at": data.get("generated_at", ""),
+            "rows": rows, "weighted": leaderboard is not None}
 
 
 def fmt_usd(v: Any) -> str:
@@ -159,7 +172,11 @@ def render_text_report(report: dict[str, Any]) -> str:
     if report["generated_at"]:
         lines.append(f"Snapshot: {report['generated_at']}")
     lines.append("")
-    header = f"{'#':<3}{'SYMBOL':<10}{'WALLETS':<8}{'PRICE':<14}{'MCAP':<10}{'TAX b/s':<10}{'SELLS':<7}{'VERDICT':<8}"
+    weighted = report.get("weighted")
+    if weighted:
+        header = f"{'#':<3}{'SYMBOL':<10}{'WALLETS':<8}{'WEIGHTED':<10}{'PRICE':<14}{'MCAP':<10}{'TAX b/s':<10}{'SELLS':<7}{'VERDICT':<8}"
+    else:
+        header = f"{'#':<3}{'SYMBOL':<10}{'WALLETS':<8}{'PRICE':<14}{'MCAP':<10}{'TAX b/s':<10}{'SELLS':<7}{'VERDICT':<8}"
     lines.append(header)
     lines.append("-" * len(header))
     for r in report["rows"]:
@@ -169,11 +186,19 @@ def render_text_report(report: dict[str, Any]) -> str:
             flag = "  HONEYPOT"
         elif not r.get("mint_renounced") or not r.get("freeze_renounced"):
             flag = "  MINT/FREEZE NOT RENOUNCED"
-        lines.append(
-            f"{r['rank']:<3}{r['symbol']:<10}{r['wallet_count']:<8}"
-            f"{fmt_usd(r['price_usd']):<14}{fmt_usd(r['market_cap_usd']):<10}"
-            f"{tax:<10}{r['sells_observed']:<7}{r['verdict']:<8}{flag}"
-        )
+        if weighted:
+            wstr = f"{r.get('weighted_count', 0):.2f}"
+            lines.append(
+                f"{r['rank']:<3}{r['symbol']:<10}{r['wallet_count']:<8}{wstr:<10}"
+                f"{fmt_usd(r['price_usd']):<14}{fmt_usd(r['market_cap_usd']):<10}"
+                f"{tax:<10}{r['sells_observed']:<7}{r['verdict']:<8}{flag}"
+            )
+        else:
+            lines.append(
+                f"{r['rank']:<3}{r['symbol']:<10}{r['wallet_count']:<8}"
+                f"{fmt_usd(r['price_usd']):<14}{fmt_usd(r['market_cap_usd']):<10}"
+                f"{tax:<10}{r['sells_observed']:<7}{r['verdict']:<8}{flag}"
+            )
     lines.append("")
     lines.append("Verdict legend: FOLLOW = strong convergence, clean safety, no exits.")
     lines.append("                WATCH  = converging but mixed signals or early exits.")
@@ -245,7 +270,14 @@ def cmd_run(args: argparse.Namespace) -> int:
             "generated_at": "",
         }
 
-    report = build_report(mode, args.chain, data)
+    leaderboard = None
+    if getattr(args, "weighted", False):
+        from weighting import fetch_leaderboard
+        leaderboard = fetch_leaderboard(args.chain, demo=(args.demo or not have_onchainos()))
+        if not leaderboard:
+            print("cohort: leaderboard unavailable — running with default (unweighted) verdict.")
+            leaderboard = None
+    report = build_report(mode, args.chain, data, leaderboard=leaderboard)
     if args.json_out:
         Path(args.json_out).write_text(json.dumps(report, indent=2))
         print(f"cohort: wrote {args.json_out}")
@@ -314,6 +346,8 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--chain", default="solana")
     run.add_argument("--demo", action="store_true", help="Use bundled fixtures, no network")
     run.add_argument("--dry-run", action="store_true", help="Real CLI, but no trades possible")
+    run.add_argument("--weighted", action="store_true",
+                     help="Cross-reference cohort wallets against leaderboard; use weighted size in verdict")
     run.add_argument("--json-out", default=None, help="Also write structured report to this path")
     run.set_defaults(func=cmd_run)
 

@@ -1,0 +1,14 @@
+{
+  "_comment": "Bundled leaderboard fixture for `cohort run --weighted --demo`. Shape mirrors `onchainos leaderboard list --sort-by 2` (win rate) and `--sort-by 5` (ROI). Each entry: walletAddress, rank, winRate, realizedPnlUsd, txCount.",
+  "chain": "solana",
+  "time_frame": "30D",
+  "entries": [
+    {"walletAddress": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM", "rank": 3,   "winRate": 78, "realizedPnlUsd": 412000, "txCount": 142},
+    {"walletAddress": "5tSm8WnAuQqjEz1xRGBs3rZ4P1c2bMqQYxiL4FxVk2pq", "rank": 17,  "winRate": 71, "realizedPnlUsd": 198000, "txCount": 88},
+    {"walletAddress": "GThUX1Atko4tqhN2NaiTazWSeFWMuiUiswQrZSwUgLLk", "rank": 4,   "winRate": 76, "realizedPnlUsd": 388000, "txCount": 110},
+    {"walletAddress": "DfQ9z3MhRkN7pW2vY8aL5cT4uR6sB1xK9eP3yJ7iH8nm", "rank": 2,   "winRate": 81, "realizedPnlUsd": 502000, "txCount": 165},
+    {"walletAddress": "7vfCXTzz5d5KqzZQ8d4n1g8gJ3aF2yJ6sCq3W4xY9LRn", "rank": 64,  "winRate": 62, "realizedPnlUsd": 42000,  "txCount": 31},
+    {"walletAddress": "BqQXCKaHrYxnq8b4mGw3yV6F2cP5L9R7sT1uK8jE2nXm", "rank": 250, "winRate": 51, "realizedPnlUsd": 8000,   "txCount": 19},
+    {"walletAddress": "8zRKwY5dVx2bJ6hN4aF1qC3uP7sM9eL2tG5yK6iH1xWp", "rank": 500, "winRate": 46, "realizedPnlUsd": 2400,   "txCount": 12}
+  ]
+}
