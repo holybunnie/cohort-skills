@@ -4,7 +4,7 @@ description: "Use this skill when the user asks what smart money is converging o
 license: MIT
 metadata:
   author: holybunnie
-  version: "0.2.0"
+  version: "0.3.0"
   homepage: "https://github.com/holybunnie/cohort-skills"
 ---
 
