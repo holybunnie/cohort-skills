@@ -1,6 +1,12 @@
 # cohort-skills
 
-A Claude Code skill that finds what smart money is **converging on** right now, then watches those same wallets for **exits** — composed from real [OKX OnchainOS](https://github.com/okx/onchainos-skills) commands.
+COHORT finds what smart money is **converging on** right now, then watches those same wallets for **exits** — composed from real [OKX OnchainOS](https://github.com/okx/onchainos-skills) commands.
+
+It ships in three forms so it works with whatever you already use:
+
+- **A plain Python CLI** — no AI assistant required, just `python3 scripts/cohort.py …`.
+- **An MCP server** — install once, works in Claude Code, Claude Desktop, Cursor, OpenAI Codex CLI, Windsurf, or any other MCP-compatible client.
+- **A Claude Code skill** (`SKILL.md`) — for users on Claude Code who want the richer trigger phrasing, workflow doc, and Mermaid diagram surfaced as a first-class skill.
 
 <p align="center">
   <img src="docs/demo.svg" alt="COHORT demo run" width="760"/>
@@ -47,38 +53,84 @@ python3 skills/cohort/scripts/cohort.py follow \
   --symbol WEN --token EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYLWbWQX1xx \
   --amount 0.1 --chain solana --demo
 
-# 8. MCP server (Claude Desktop / Cursor / Windsurf / Claude Code)
+# 8. MCP server (works with any MCP-compatible client)
 python3 skills/cohort/scripts/mcp_server.py
 # → exposes cohort_run / cohort_watch / cohort_backtest / cohort_follow_dry_run
-# Copy .mcp.json.example to .mcp.json in your client to install.
+# See "Installing into your AI assistant" below for per-client config.
 ```
 
-## Using as a Claude skill
+## Installing into your AI assistant
 
-### Prerequisites
+The cohort engine itself is Python — it has no dependency on any specific assistant. The supported integration paths are:
 
-COHORT composes commands from the upstream [`okx/onchainos-skills`](https://github.com/okx/onchainos-skills) plugin. Install both pieces:
+| Client | Path | Config file |
+|---|---|---|
+| **Claude Code** | MCP server **or** native skill (`SKILL.md`) | `.mcp.json` (project) or `~/.claude.json` |
+| **Claude Desktop** | MCP server | `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) / `%APPDATA%\Claude\claude_desktop_config.json` (Windows) |
+| **Cursor** | MCP server | `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global) |
+| **OpenAI Codex CLI** | MCP server | `~/.codex/config.toml` |
+| **Windsurf** | MCP server | `~/.codeium/windsurf/mcp_config.json` |
+| **Any other MCP client** | MCP server | client's `mcpServers` config |
+| **No assistant** | Run the Python CLI directly | — |
+
+### Shared prerequisite — install the OnchainOS CLI
+
+Every path below shells out to the `onchainos` binary for live data (demo mode works without it). Install it once:
 
 ```bash
-# 1. Install the onchainos CLI binary
 curl -sSL https://raw.githubusercontent.com/okx/onchainos-skills/main/install.sh | sh
+onchainos --version       # → onchainos 3.3.6 or newer
+```
 
-# 2. Install the upstream skills plugin so its SKILL.md files are discoverable
+### Option A — MCP server (Claude Code, Claude Desktop, Cursor, Codex, Windsurf, …)
+
+Most clients use the same JSON shape. Copy `.mcp.json.example` into the right path for your client, replacing the relative `args` path with an absolute one if your client isn't launched from this repo.
+
+**JSON-based clients** (Claude Code, Claude Desktop, Cursor, Windsurf, …):
+
+```json
+{
+  "mcpServers": {
+    "cohort": {
+      "command": "python3",
+      "args": ["/absolute/path/to/cohort-skills/skills/cohort/scripts/mcp_server.py"]
+    }
+  }
+}
+```
+
+**OpenAI Codex CLI** uses TOML instead of JSON — put this in `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.cohort]
+command = "python3"
+args = ["/absolute/path/to/cohort-skills/skills/cohort/scripts/mcp_server.py"]
+```
+
+After installing, the client will expose four tools: `cohort_run`, `cohort_watch`, `cohort_backtest`, `cohort_follow_dry_run`. None of them broadcasts a transaction — execution still requires the exact in-chat confirmation phrase routed through your assistant's normal tool path, not through MCP.
+
+### Option B — Claude Code native skill
+
+If you're on Claude Code specifically, you can install COHORT as a skill so it triggers on natural-language phrases (e.g. *"what is smart money converging on?"*) rather than requiring an explicit tool call. This path also pulls in the upstream OKX skills so cross-references in `SKILL.md` resolve.
+
+```bash
+# 1. Install the upstream skills plugin (Claude Code only)
 mkdir -p ~/.claude/plugins/marketplaces
 git clone https://github.com/okx/onchainos-skills.git \
   ~/.claude/plugins/marketplaces/onchainos-skills
+
+# 2. Drop skills/cohort/ into your Claude Code skills directory
 ```
 
-Verify:
+Verify the upstream plugin is visible:
 
 ```bash
-onchainos --version       # → onchainos 3.3.6 (or newer)
 ls ~/.claude/plugins/marketplaces/onchainos-skills/skills | head
 ```
 
-### Add COHORT
+### Option C — Just the Python CLI
 
-Drop `skills/cohort/` into your Claude Code skills directory. The skill triggers when the user asks about smart money convergence, cohort behavior, or watching multi-wallet sells.
+If you don't use an AI assistant (or want to script COHORT from cron / a notebook / CI), the Python CLI in `skills/cohort/scripts/cohort.py` works on its own. See **Quick start** above.
 
 ### About the OKX paid quota
 

@@ -2,8 +2,10 @@
 """COHORT MCP server — exposes cohort_run / cohort_watch / cohort_backtest /
 cohort_follow_dry_run as MCP tools over JSON-RPC 2.0 on stdio.
 
-Installs into any MCP-compatible client (Claude Desktop, Cursor, Windsurf,
-Claude Code via .mcp.json):
+Installs into any MCP-compatible client — Claude Code, Claude Desktop,
+Cursor, OpenAI Codex CLI, Windsurf, or anything else that speaks MCP.
+
+JSON-based clients (Claude Code / Desktop, Cursor, Windsurf, …):
 
     {
       "mcpServers": {
@@ -14,10 +16,16 @@ Claude Code via .mcp.json):
       }
     }
 
+OpenAI Codex CLI uses TOML (~/.codex/config.toml):
+
+    [mcp_servers.cohort]
+    command = "python3"
+    args = ["/abs/path/to/skills/cohort/scripts/mcp_server.py"]
+
 NO TRADES. The follow tool runs in dry-run mode only; broadcast still
-requires the user's exact confirmation phrase to Claude in the chat, which
-the agent translates to a separate `onchainos swap execute` call through
-its normal tool layer — not through this MCP server.
+requires the user's exact confirmation phrase to the assistant in chat,
+which the agent translates to a separate `onchainos swap execute` call
+through its normal tool layer — not through this MCP server.
 
 Implementation: minimal MCP protocol surface — `initialize`, `tools/list`,
 `tools/call`. No external SDK dependency. ~200 lines.
